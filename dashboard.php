@@ -3,15 +3,9 @@ require 'functions.php';
 guard();
 ?>
 
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Dashboard</title>
-</head>
-<body>
-    <h1>Welcome to the Dashboard</h1>
-    <p><a href="student/register.php">Manage Students</a></p>
-    <p><a href="subject/add.php">Manage Subjects</a></p>
-    <p><a href="logout.php">Logout</a></p>
-</body>
-</html>
+<?php include 'header.php'; ?>
+<h1>Dashboard</h1>
+<p>Welcome to the student management system.</p>
+<a href="student/register.php" class="btn btn-primary">Register New Student</a>
+<a href="logout.php" class="btn btn-danger">Logout</a>
+<?php include 'footer.php'; ?>

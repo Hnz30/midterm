@@ -4,8 +4,7 @@ session_start();
 // User Authentication Functions
 function getUsers() {
     return [
-        ['email' => 'user1@email.com', 'password' => 'password'],
-        // Add more users if needed
+        ['email' => 'user1@example.com', 'password' => 'password'],
     ];
 }
 
@@ -24,43 +23,18 @@ function validateLoginCredentials($email, $password) {
 
 function checkLoginCredentials($email, $password, $users) {
     foreach ($users as $user) {
-        if ($user['email'] == $email && $user['password'] == $password) {
+        if ($user['email'] === $email && $user['password'] === $password) {
             return true;
         }
     }
     return false;
 }
 
-function checkUserSessionIsActive() {
+function guard() {
     if (!isset($_SESSION['email'])) {
         header("Location: index.php");
         exit;
     }
-}
-
-function guard() {
-    if (!isset($_SESSION['email']) || empty($_SESSION['email'])) {
-        header("Location: index.php");
-        exit;
-    }
-}
-
-// Error Handling Functions
-function displayErrors($errors) {
-    $output = "<strong>System Errors:</strong><ul>";
-    foreach ($errors as $error) {
-        $output .= "<li>$error</li>";
-    }
-    $output .= "</ul>";
-    return $output;
-}
-
-function renderErrorsToView($error) {
-    return empty($error) ? null : "<div class='alert alert-danger alert-dismissible fade show' role='alert'>$error<button type='button' class='btn-close' data-bs-dismiss='alert'></button></div>";
-}
-
-function getBaseURL() {
-    return "http://localhost/your_project_directory/";
 }
 
 // Student Management Functions
@@ -72,6 +46,14 @@ function validateStudentData($student_data) {
     return $errors;
 }
 
-// ... More student and subject functions go here
-
+function checkDuplicateStudentData($student_data) {
+    if (isset($_SESSION['student_data'])) {
+        foreach ($_SESSION['student_data'] as $student) {
+            if ($student['student_id'] === $student_data['student_id']) {
+                return ["Duplicate Student ID"];
+            }
+        }
+    }
+    return [];
+}
 ?>
