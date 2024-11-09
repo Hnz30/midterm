@@ -14,13 +14,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (empty($errors)) {
         $_SESSION['student_data'][] = $student_data;
-        header("Location: ../dashboard.php");
+        header("Location: register.php");
         exit;
     }
 }
 ?>
 
 <?php include '../header.php'; ?>
+
 <h1>Register Student</h1>
 <form action="register.php" method="POST">
     <div class="form-group">
@@ -37,5 +38,42 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
     <button type="submit" class="btn btn-success">Register</button>
 </form>
-<?php if (!empty($errors)) echo "<div class='alert alert-danger mt-3'>" . implode('<br>', $errors) . "</div>"; ?>
+
+<?php
+if (!empty($errors)) {
+    echo "<div class='alert alert-danger mt-3'>" . implode('<br>', $errors) . "</div>";
+}
+?>
+
+<hr>
+
+<h2>Registered Students</h2>
+
+<?php if (!empty($_SESSION['student_data'])): ?>
+    <table class="table table-bordered mt-3">
+        <thead>
+            <tr>
+                <th>Student ID</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($_SESSION['student_data'] as $index => $student): ?>
+                <tr>
+                    <td><?php echo htmlspecialchars($student['student_id']); ?></td>
+                    <td><?php echo htmlspecialchars($student['first_name']); ?></td>
+                    <td><?php echo htmlspecialchars($student['last_name']); ?></td>
+                    <td>
+                        <a href="edit.php?index=<?php echo $index; ?>" class="btn btn-primary btn-sm">Edit</a>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
+<?php else: ?>
+    <p class="text-muted">No students registered yet.</p>
+<?php endif; ?>
+
 <?php include '../footer.php'; ?>
