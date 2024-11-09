@@ -4,8 +4,18 @@ guard();
 ?>
 
 <?php include 'header.php'; ?>
-<h1>Dashboard</h1>
-<p>Welcome to the student management system.</p>
-<a href="student/register.php" class="btn btn-primary">Register New Student</a>
-<a href="logout.php" class="btn btn-danger">Logout</a>
+
+<!-- Breadcrumbs -->
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
+  </ol>
+</nav>
+
+<h1>Welcome to the Dashboard</h1>
+<p>Manage your students and other details here.</p>
+
+<a href="student/register.php" class="btn btn-primary">Go to Register Student</a>
+
 <?php include 'footer.php'; ?>
+

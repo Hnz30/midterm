@@ -27,6 +27,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <?php include '../header.php'; ?>
 
+<!-- Breadcrumbs -->
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="../dashboard.php">Dashboard</a></li>
+    <li class="breadcrumb-item"><a href="register.php">Register Student</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Edit Student</li>
+  </ol>
+</nav>
+
 <h1>Edit Student</h1>
 <form action="edit.php?index=<?php echo $index; ?>" method="POST">
     <div class="form-group">
