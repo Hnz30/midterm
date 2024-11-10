@@ -1,21 +1,51 @@
 <?php
-require 'functions.php';
-guard();
+session_start(); 
+$pageTitle = "Dashboard";
+if (empty($_SESSION['email'])) {
+    header("Location: index.php");
+    exit;
+}
+
+header("Cache-Control: no-store, no-cache, must-revalidate"); 
+header("Cache-Control: post-check=0, pre-check=0", false); 
+header("Pragma: no-cache");
+
+
+include 'header.php'; 
+include 'functions.php'; 
+
+checkUserSessionIsActive();  
+
+guard();  
+
 ?>
+<main>
+    <br>
+    <div class="container d-flex justify-content-between align-items-center col-md-7">
+        <h3>Welcome to the System: <?php echo $_SESSION['email']; ?></h3>
+        <button onclick="window.location.href='logout.php'" class="btn btn-danger">Logout</button>
+    </div>
 
-<?php include 'header.php'; ?>
+    <!-- Register Student Card -->
+    <div class="row justify-content-center mt-4">
+        <div class="col-md-7">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Register a Student</h5>
+                </div>
+                <div class="card-body">
+                    <p class="justify-text-center">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Unde molestias facere, cum debitis nam quis fugiat! Vero, mollitia. Nulla minima dolore molestiae eligendi ducimus beatae ipsum vitae impedit! Ipsa illo eum soluta dolorem earum libero quam necessitatibus dolorum culpa! In aliquid quo rem perspiciatis quibusdam voluptatem, repellat eum corrupti amet.</p>
 
-<!-- Breadcrumbs -->
-<nav aria-label="breadcrumb">
-  <ol class="breadcrumb">
-    <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
-  </ol>
-</nav>
+                    <!-- Button to proceed to register a student -->
+                    <div class="d-grid gap-2">
+                        <a href="student/register.php" class="btn btn-primary w-100">Register a Student</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
 
-<h1>Welcome to the Dashboard</h1>
-<p>Manage your students and other details here.</p>
-
-<a href="student/register.php" class="btn btn-primary">Go to Register Student</a>
-
-<?php include 'footer.php'; ?>
-
+<?php
+include 'footer.php';  // Include the footer
+?>

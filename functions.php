@@ -3,7 +3,7 @@
 
 function getUsers() {
     return [
-        ["email" => "user1@eemail.com", "password" => "user1"],
+        ["email" => "user1@email.com", "password" => "user1"],
     
     ];
 }
