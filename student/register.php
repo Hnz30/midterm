@@ -61,7 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <form method="POST" action="" class="border border-secondary-1 p-5 mb-4">
             <div class="mb-3">
                 <label for="student_id" class="form-label">Student ID</label>
-                <input type="text" class="form-control" id="student_id" name="student_id" placeholder="Enter Student ID" >
+                <input type="number" class="form-control" id="student_id" name="student_id" placeholder="Enter Student ID" >
             </div>
 
             <div class="mb-3">
