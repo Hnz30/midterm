@@ -48,15 +48,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <form action="register.php" method="POST">
     <div class="form-group">
         <label for="student_id">Student ID</label>
-        <input type="text" class="form-control" name="student_id" id="student_id" placeholder="Student ID" required>
+        <input type="number" class="form-control" name="student_id" id="student_id" placeholder="Student ID" >
     </div>
     <div class="form-group">
         <label for="first_name">First Name</label>
-        <input type="text" class="form-control" name="first_name" id="first_name" placeholder="First Name" required>
+        <input type="text" class="form-control" name="first_name" id="first_name" placeholder="First Name" >
     </div>
     <div class="form-group">
         <label for="last_name">Last Name</label>
-        <input type="text" class="form-control" name="last_name" id="last_name" placeholder="Last Name" required>
+        <input type="text" class="form-control" name="last_name" id="last_name" placeholder="Last Name" >
     </div>
     <button type="submit" class="btn btn-success">Register</button>
 </form>
