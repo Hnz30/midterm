@@ -1,29 +1,45 @@
 <?php
-session_start(); // Start the session to access session variables
 
-// User Authentication Functions
+
 function getUsers() {
     return [
-        ['email' => 'user1@email.com', 'password' => 'password'],
-
+        ["email" => "user1@eemail.com", "password" => "user1"],
+    
     ];
 }
 
 function validateLoginCredentials($email, $password) {
     $errors = [];
 
+    // Validate email
     if (empty($email)) {
-        $errors[] = 'Email is required';
+        $errors[] = "Email is required.";
     } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $errors[] = 'Invalid email format';
+        $errors[] = "Invalid Email.";
+    } else {
+        // Check if email exists in the getUsers() array
+        $users = getUsers();
+        $emailExists = false;
+        foreach ($users as $user) {
+            if ($user['email'] === $email) {
+                $emailExists = true;
+                break;
+            }
+        }
+
+        if (!$emailExists) {
+            $errors[] = "Invalid Email.";
+        }
     }
 
+    // Validate password
     if (empty($password)) {
-        $errors[] = 'Password is required';
+        $errors[] = "Password is required.";
     }
 
     return $errors;
 }
+
 
 function checkLoginCredentials($email, $password, $users) {
     foreach ($users as $user) {
@@ -35,132 +51,102 @@ function checkLoginCredentials($email, $password, $users) {
 }
 
 function checkUserSessionIsActive() {
-    if (isset($_SESSION['email']) && isset($_SESSION['current_page'])) {
-        header("Location: " . $_SESSION['current_page']);
+    // Only redirect if the user is already logged in and trying to access the login page
+    if (isset($_SESSION['email']) && basename($_SERVER['PHP_SELF']) == 'index.php') {
+        // Redirect to the dashboard if the user is logged in
+        header("Location: dashboard.php");
         exit;
     }
 }
 
-// Session Management Functions
+
+
 function guard() {
-    if (empty($_SESSION['email'])) {
-        header('Location: index.php');
+    if (empty($_SESSION['email']) && basename($_SERVER['PHP_SELF']) != 'index.php') {
+        // Only redirect if the user is not logged in and is trying to access a protected page
+        header("Location: index.php"); 
         exit;
     }
 }
 
-// Error Handling Functions
+
 function displayErrors($errors) {
-    $errorString = '<ul>';
+    // <strong class='alert alert-danger'>System Errors</strong>
+    $output = "<ul>";
     foreach ($errors as $error) {
-        $errorString .= '<li>' . htmlspecialchars($error) . '</li>';
+        $output .= "<li>" . htmlspecialchars($error) . "</li>";
     }
-    $errorString .= '</ul>';
-    return $errorString;
+    $output .= "</ul>";
+    return $output;
 }
+
+
+
 
 function renderErrorsToView($error) {
-    if (!empty($error)) {
-        return '<div class="alert alert-danger alert-dismissible fade show" role="alert">' . $error .
-               '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
+    if (empty($error)) {
+        return null;
     }
-    return '';
+    return "<div class='alert alert-danger alert-dismissible fade show' role='alert'>
+                $error
+                <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
+            </div>";
 }
 
-// Student Management Functions
-function validateStudentData($student_data) {
-    $errors = [];
-
-    if (empty($student_data['student_id'])) {
-        $errors[] = 'Student ID is required';
-    }
-    if (empty($student_data['first_name'])) {
-        $errors[] = 'First Name is required';
-    }
-    if (empty($student_data['last_name'])) {
-        $errors[] = 'Last Name is required';
-    }
-
-    return $errors;
+function getBaseURL() {
+    return 'http://' . $_SERVER['HTTP_HOST'] . '/midterms';
 }
 
 function checkDuplicateStudentData($student_data) {
+    // Check if the student_id already exists in the session
     if (!empty($_SESSION['student_data'])) {
         foreach ($_SESSION['student_data'] as $existing_student) {
             if ($existing_student['student_id'] === $student_data['student_id']) {
-                return true; // Duplicate found
+                return $existing_student; // Return the existing student if there's a match
             }
         }
     }
-    return false; // No duplicates
+    return null; // Return null if no duplicate is found
 }
 
-function getSelectedStudentIndex($student_id) {
-    foreach ($_SESSION['student_data'] as $index => $student) {
-        if ($student['student_id'] === $student_id) {
-            return $index;
-        }
-    }
-    return null; // Not found
-}
-
-function getSelectedStudentData($index) {
-    if (isset($_SESSION['student_data'][$index])) {
-        return $_SESSION['student_data'][$index];
-    }
-    return null;
-}
-
-// Subject Management Functions (Not used in this case as per your request to remove subjects)
-function validateSubjectData($subject_data) {
+function validateStudentData($student_data) {
     $errors = [];
 
-    if (empty($subject_data['subject_code'])) {
-        $errors[] = 'Subject Code is required';
-    }
-    if (empty($subject_data['subject_name'])) {
-        $errors[] = 'Subject Name is required';
+    // Check if student ID is provided
+    if (empty($student_data['student_id'])) {
+        $errors[] = "Student ID is required.";
     }
 
+    // Check if first name is provided
+    if (empty($student_data['first_name'])) {
+        $errors[] = "First Name is required.";
+    }
+
+    // Check if last name is provided
+    if (empty($student_data['last_name'])) {
+        $errors[] = "Last Name is required.";
+    }
+
+    // Optional: Add more validation rules as needed (e.g., length check, format validation)
     return $errors;
 }
 
-function checkDuplicateSubjectData($subject_data) {
-    if (!empty($_SESSION['subject_data'])) {
-        foreach ($_SESSION['subject_data'] as $existing_subject) {
-            if ($existing_subject['subject_code'] === $subject_data['subject_code'] || $existing_subject['subject_name'] === $subject_data['subject_name']) {
-                return true; // Duplicate found
-            }
+
+    // Function to get a student's data by index
+    function getSelectedStudentData($index) {
+        if (isset($_SESSION['student_data'][$index])) {
+            return $_SESSION['student_data'][$index];
+        }
+        return false;
+    }
+
+    // Function to update student's name and last name by index
+    function updateStudent($index, $name, $lastname) {
+        if (isset($_SESSION['student_data'][$index])) {
+            $_SESSION['student_data'][$index]['name'] = $name;
+            $_SESSION['student_data'][$index]['lastname'] = $lastname;
         }
     }
-    return false; // No duplicates
-}
 
-function getSelectedSubjectIndex($subject_code) {
-    foreach ($_SESSION['subject_data'] as $index => $subject) {
-        if ($subject['subject_code'] === $subject_code) {
-            return $index;
-        }
-    }
-    return null; // Not found
-}
 
-function getSelectedSubjectData($index) {
-    if (isset($_SESSION['subject_data'][$index])) {
-        return $_SESSION['subject_data'][$index];
-    }
-    return null;
-}
-
-// Other Utility Functions
-function getBaseURL() {
-    return 'http://' . $_SERVER['HTTP_HOST'] . dirname($_SERVER['PHP_SELF']);
-}
-
-function validateAttachedSubject($subject_data) {
-    if (empty($subject_data)) {
-        return ['At least one subject must be selected'];
-    }
-    return []; // No errors
-}
 ?>
