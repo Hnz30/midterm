@@ -84,5 +84,5 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 </main>
 
 <?php
-include 'footer.php'; // Include the footer
+include 'footer.php'; 
 ?>

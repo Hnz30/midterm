@@ -1,9 +1,3 @@
-<?php
-// Start the session for all pages
-//session_start();
-
-// Include Bootstrap or other required resources
-?>
 <!DOCTYPE html>
 <html lang="en">
 <head>

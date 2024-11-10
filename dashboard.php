@@ -34,7 +34,7 @@ guard();
                     <h5>Register a Student</h5>
                 </div>
                 <div class="card-body">
-                    <p class="justify-text-center">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Unde molestias facere, cum debitis nam quis fugiat! Vero, mollitia. Nulla minima dolore molestiae eligendi ducimus beatae ipsum vitae impedit! Ipsa illo eum soluta dolorem earum libero quam necessitatibus dolorum culpa! In aliquid quo rem perspiciatis quibusdam voluptatem, repellat eum corrupti amet.</p>
+                    <p class="justify-text-center">This section allows you to register a new student in the system. Click the button below to proceed with the registration process.</p>
 
                     <!-- Button to proceed to register a student -->
                     <div class="d-grid gap-2">
@@ -47,5 +47,5 @@ guard();
 </main>
 
 <?php
-include 'footer.php';  // Include the footer
+include 'footer.php';  
 ?>
